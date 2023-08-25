@@ -146,6 +146,7 @@
             <h1 class="text-lg font-medium leading-6 text-gray-900 sm:truncate"> {{ this.siteTitle }}</h1>
           </div>
         </div>
+        <bar-chart />
 
         <!-- Projects table (small breakpoint and up) -->
         <div class="hidden sm:block">
@@ -212,6 +213,7 @@ import Site from "@/components/SitesList.vue";
 import Reactions from "@/components/Reactions.vue";
 import Configuration from "@/components/Configuration.vue";
 import {createRouter as router} from "vue-router";
+import BarChart from "@/components/BarChart.vue";
 
 export default {
   components: {
@@ -219,7 +221,8 @@ export default {
     "navigation": Navigation,
     "site": Site,
     "reaction": Reactions,
-    "configuration": Configuration
+    "configuration": Configuration,
+    "bar-chart": BarChart,
   },
   data() {
     return {
@@ -319,6 +322,7 @@ import {
 import moment from 'moment'
 import {Bars3CenterLeftIcon, XMarkIcon} from '@heroicons/vue/24/outline'
 import {HOST} from "@/utils";
+import BarChart from "@/components/BarChart.vue";
 
 const sidebarOpen = ref(false)
 </script>
