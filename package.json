@@ -1,0 +1,26 @@
+{
+  "name": "untitled13",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@headlessui/vue": "^1.7.15",
+    "@heroicons/vue": "^2.0.18",
+    "moment": "^2.29.4",
+    "path-browserify": "^1.0.1",
+    "vue": "^3.3.4",
+    "vue-router": "4"
+  },
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.4.0",
+    "@vitejs/plugin-vue": "^4.2.3",
+    "autoprefixer": "^10.4.5",
+    "postcss": "^8.4.27",
+    "tailwindcss": "^3.3.3",
+    "vite": "^4.4.6"
+  }
+}
