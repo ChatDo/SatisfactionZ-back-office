@@ -11,7 +11,7 @@
   <modal :open=showModal v-on:cancelModal="cancelModal" v-on:addSite="postSite($event)"></modal>
 
   <div class="mt-1 space-y-1" role="group" aria-labelledby="desktop-teams-headline">
-    <a v-for="site in sites" :key="site.id" :href="site.href" v-on:click="selectSite(site.id)"
+    <a v-for="site in sites" :key="site.id" :href="site.href" v-on:click="selectSite(site)"
        :class="[selectedSite === site.id ? 'bg-gray-300' : 'hover:bg-gray-200', 'group', 'flex', 'items-center', 'rounded-md px-3', 'py-2', 'text-sm', 'font-medium', 'text-gray-700', 'hover:text-gray-900']">
       <span :class="['bg-green-500', 'mr-3 h-2.5 w-2.5 rounded-full']" aria-hidden="true"/>
       <span class="truncate w-2/3">{{ site.name }}</span>
@@ -48,12 +48,12 @@ export default {
         },
       })
     },
-    selectSite(id) {
-      if (this.selectedSite === id) {
+    selectSite(site) {
+      if (this.selectedSite === site.id) {
         return
       }
-      this.$emit('changeSite', id)
-      this.selectedSite = id
+      this.$emit('changeSite', site)
+      this.selectedSite = site.id
     },
     async postSite(data) {
       let req = await fetch(`${HOST}/sites`, {

@@ -142,7 +142,8 @@
         <div
             class="border-b border-gray-200 px-4 py-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8">
           <div class="min-w-0 flex-1">
-            <h1 class="text-lg font-medium leading-6 text-gray-900 sm:truncate">Nom du site</h1>
+<!--            TODO: SITE NAME-->
+            <h1 class="text-lg font-medium leading-6 text-gray-900 sm:truncate"> {{ this.siteTitle }}</h1>
           </div>
         </div>
 
@@ -155,7 +156,7 @@
                 <h4 class="mt-2 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">Aucune réaction reçue</h4>
               </div>
             </div>
-            <table v-else class="min-w-full">
+            <table v-else class="min-w-full ml-2 mr-5">
               <thead>
               <tr class="border-t border-gray-200">
                 <th class="border-b border-gray-200 bg-gray-50 px-6 py-3 text-center text-sm font-semibold text-gray-900"
@@ -165,11 +166,12 @@
                 <th class="border-b justify-center border-gray-200 bg-gray-50 px-12 py-3 text-sm font-semibold text-gray-900"
                     scope="col">Date
                 </th>
+                <th class="border-b justify-center border-gray-200 bg-gray-50 px-12 py-3 text-sm font-semibold text-gray-900"
+                    scope="col">Appareil
+                </th>
                 <th class="hidden text-center flex border-b border-gray-200 bg-gray-50 px-6 py-3 text-sm font-semibold text-gray-900 md:table-cell"
                     scope="col">Commentaire
                 </th>
-                <th class="border-b border-gray-200 bg-gray-50 py-3 pr-6 text-center text-sm font-semibold text-gray-900"
-                    scope="col"/>
               </tr>
               </thead>
 
@@ -184,14 +186,11 @@
 <!--                  {{ reaction.created_at }}-->
                 </td>
                 <td class="hidden whitespace-nowrap px-6 py-3 text-center text-sm text-gray-500 md:table-cell">
+                  {{ devices.find(device => device.id === reaction.device_id).name }}
+                </td>
+                <td class="hidden whitespace-nowrap px-6 py-3 text-center text-sm text-gray-500 md:table-cell">
                   {{ reaction.comment === 'undefined' ? '/' : reaction.comment }}
                 </td>
-<!--                <td class="hidden whitespace-nowrap px-6 py-3 text-center text-sm text-gray-500 md:table-cell">-->
-<!--                  <button type="button"-->
-<!--                          class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-900 bg-white hover:bg-gray-50">-->
-<!--                    Voir plus-->
-<!--                  </button>-->
-<!--                </td>-->
               </tr>
               </tbody>
             </table>
@@ -224,11 +223,12 @@ export default {
   },
   data() {
     return {
-      sites: [],
       reactions: [],
+      devices: [],
       user: {},
       selectedNav: 1,
       selectedSite: 0,
+      siteTitle: "none",
     };
   },
   methods: {
@@ -257,15 +257,25 @@ export default {
         this.user = (await res.json()).infos
       });
     },
-    async changeSite(id) {
-      this.selectedSite = id
-      await fetch(`${HOST}/${id}/reactions`, {
+    async changeSite(site) {
+      this.selectedSite = site.id
+      this.siteTitle = site.name
+      await fetch(`${HOST}/${site.id}/reactions`, {
         method: 'GET',
         headers: {
           'Authorization': document.cookie.split('=')[1]
         },
       }).then(async (res) => {
         this.reactions = (await res.json()).result
+      })
+      await fetch(`${HOST}/${site.id}/devices`, {
+        method: 'GET',
+        headers: {
+          'Authorization': document.cookie.split('=')[1]
+        },
+      }).then(async (res) => {
+        this.devices = (await res.json()).result
+        console.log(this.devices)
       })
     },
     async changeNav(event) {

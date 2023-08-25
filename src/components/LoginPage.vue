@@ -101,7 +101,12 @@ export default {
           password: this.$refs.password.value,
         })
       }).then(async (result) => {
-        document.cookie = "accessToken" + "=" + `${(await result.json()).accessToken}` + ";";
+        console.log(result)
+        if (result.status !== 200) {
+          alert("Wrong credentials")
+          return
+        }
+        document.cookie = `accessToken=${(await result.json()).accessToken}`
         this.$router.push('/dashboard')
       })
     },
