@@ -91,7 +91,7 @@ export default {
   created() {
     this.getSites().then(() => {
       this.selectedSite = this.sites[0].id
-      this.$emit('changeSite', this.sites[0].id)
+      this.$emit('changeSite', this.sites[0])
     })
   }
 }

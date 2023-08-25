@@ -227,7 +227,7 @@ export default {
       devices: [],
       user: {},
       selectedNav: 1,
-      selectedSite: 0,
+      selectedSite: -1,
       siteTitle: "none",
     };
   },
