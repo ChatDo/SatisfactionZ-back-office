@@ -41,7 +41,7 @@ export default {
     async removeSite(site) {
       console.log(site)
       console.log(document.cookie.split('=')[1])
-      let del = await fetch(`http://localhost:3000/sites/${site.id}`, {
+      let del = await fetch(`${HOST}/sites/${site.id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': document.cookie.split('=')[1]
@@ -56,7 +56,7 @@ export default {
       this.selectedSite = id
     },
     async postSite(data) {
-      let req = await fetch("http://localhost:3000/sites", {
+      let req = await fetch(`${HOST}/sites`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ export default {
     },
     async getSites() {
       // LOGIN
-      await fetch("http://localhost:3000/sites", {
+      await fetch(`${HOST}/sites`, {
         headers: {
           'Authorization': document.cookie.split('=')[1]
         }

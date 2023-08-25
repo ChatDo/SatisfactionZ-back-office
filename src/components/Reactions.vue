@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     async getReportReaction() {
-      await fetch(`http://localhost:3000/${this.id}/reactions`, {
+      await fetch(`${HOST}/${this.id}/reactions`, {
         method: 'GET',
         headers: {
           'Authorization': document.cookie.split('=')[1]

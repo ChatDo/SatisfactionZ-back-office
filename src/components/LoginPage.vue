@@ -1,16 +1,6 @@
 <template>
-  <!--
-    This example requires updating your template:
-
-    ```
-    <html class="h-full bg-gray-50">
-    <body class="h-full">
-    ```
-  -->
   <div class="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
-<!--      <img class="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"-->
-<!--           alt="SatisfactionZ"/>-->
       <img class="mx-auto h-32 w-auto" src="../assets/satisfactionZ_no_round.svg"
            alt="SatisfactionZ"/>
     </div>
@@ -99,7 +89,7 @@ export default {
       console.log("setAuthCookie")
       console.log(this.$refs.email.value)
       console.log(this.$refs.password.value)
-      await fetch("http://localhost:3000/login", {
+      await fetch(`${HOST}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -109,7 +99,7 @@ export default {
           password: this.$refs.password.value,
         })
       }).then(async (result) => {
-        document.cookie = `accessToken=${(await result.json()).accessToken}`
+        document.cookie = "accessToken" + "=" + `${(await result.json()).accessToken}` + ";";
         this.$router.push('/dashboard')
       })
     },

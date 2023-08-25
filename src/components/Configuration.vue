@@ -123,7 +123,7 @@ export default {
     async updateDevices(event) {
       console.log(event)
       this.selectedSiteId = event.id
-      await fetch(`http://localhost:3000/${event.id}/devices`, {
+      await fetch(`${HOST}/${event.id}/devices`, {
         headers: {
           'Authorization': document.cookie.split('=')[1]
         }
@@ -144,7 +144,7 @@ export default {
     },
     async getSitesChoices() {
       // LOGIN
-      await fetch("http://localhost:3000/sites", {
+      await fetch(`${HOST}/sites`, {
         headers: {
           'Authorization': document.cookie.split('=')[1]
         }
@@ -159,7 +159,7 @@ export default {
     },
     async postDevice(data) {
       console.log(data);
-      let req = await fetch(`http://localhost:3000/devices`, {
+      let req = await fetch(`${HOST}/devices`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -174,7 +174,7 @@ export default {
       this.showDeviceModal = false
     },
     async postSite(data) {
-      let req = await fetch("http://localhost:3000/sites", {
+      let req = await fetch(`${HOST}/sites`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

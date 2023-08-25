@@ -180,10 +180,11 @@
                   {{ reaction.state }}
                 </td>
                 <td class="hidden whitespace-nowrap px-6 py-3 text-center text-sm text-gray-500 md:table-cell">
-                  {{ moment(reaction.created_at, 'YYYY-MM-DD').format('DD/MM/YYYY') }}
+                  {{ moment(reaction.created_at, 'YYYY-MM-DD HH:mm').format('DD/MM/YYYY HH:mm') }}
+<!--                  {{ reaction.created_at }}-->
                 </td>
                 <td class="hidden whitespace-nowrap px-6 py-3 text-center text-sm text-gray-500 md:table-cell">
-                  {{ reaction.comment }}
+                  {{ reaction.comment === 'undefined' ? '/' : reaction.comment }}
                 </td>
 <!--                <td class="hidden whitespace-nowrap px-6 py-3 text-center text-sm text-gray-500 md:table-cell">-->
 <!--                  <button type="button"-->
@@ -211,6 +212,7 @@ import Navigation from "@/components/Navigation.vue";
 import Site from "@/components/SitesList.vue";
 import Reactions from "@/components/Reactions.vue";
 import Configuration from "@/components/Configuration.vue";
+import {createRouter as router} from "vue-router";
 
 export default {
   components: {
@@ -231,7 +233,7 @@ export default {
   },
   methods: {
     async removeSite(site) {
-      await fetch(`http://localhost:3000/sites/${site.id}`, {
+      await fetch(`${HOST}/sites/${site.id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': document.cookie.split('=')[1]
@@ -239,11 +241,14 @@ export default {
       },)
     },
     async logout() {
-      document.cookie = ""
+      console.log(document.cookie)
+      console.log('CLEARING')
+      // document.cookie = "accesstoken="
+      console.log(document.cookie)
       this.$router.push('/login')
     },
     async getUser() {
-      await fetch(`http://localhost:3000/me`, {
+      await fetch(`${HOST}/me`, {
         method: 'GET',
         headers: {
           'Authorization': document.cookie.split('=')[1]
@@ -254,7 +259,7 @@ export default {
     },
     async changeSite(id) {
       this.selectedSite = id
-      await fetch(`http://localhost:3000/${id}/reactions`, {
+      await fetch(`${HOST}/${id}/reactions`, {
         method: 'GET',
         headers: {
           'Authorization': document.cookie.split('=')[1]
@@ -266,25 +271,25 @@ export default {
     async changeNav(event) {
       this.selectedNav = event.id
     },
-    // async checkAuth() {
-    //   console.log(document.cookie)
-    //   if (document.cookie.split('=')[1] === undefined)
-    //     return false
-    //   if (document.cookie.split('=')[1] === "")
-    //     return false
-    //   if (document.cookie === "")
-    //     return false
-    //   return document.cookie !== undefined;
-    // },
+    async checkAuth() {
+      console.log(document.cookie)
+      if (document.cookie.split('=')[1] === undefined)
+        return false
+      if (document.cookie.split('=')[1] === "")
+        return false
+      if (document.cookie === "")
+        return false
+      return document.cookie !== undefined;
+    },
   },
   created() {
-    // this.checkAuth().then((value) => {
-    //   console.log(value)
-    //   if (value)
+    this.checkAuth().then((value) => {
+      console.log(value)
+      if (value)
         this.getUser();
-      // else
-      //   router.push('/login')
-    // })
+      else
+        router.push('/login')
+    })
   },
 };
 </script>
