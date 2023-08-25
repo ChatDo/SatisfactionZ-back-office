@@ -16,6 +16,8 @@ export default {
     return {
       selectedNavigation: 1,
       navigation: [
+        // {id: 1, name: 'Dashboard', href: '/dashboard'},
+        // {id: 2, name: 'Configuration', href: '/configuration'},
         {id: 1, name: 'Dashboard', href: '#'},
         {id: 2, name: 'Configuration', href: '#'},
       ],

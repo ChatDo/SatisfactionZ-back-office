@@ -15,7 +15,7 @@
           class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
         <div class="py-1">
           <MenuItems v-slot="Test" v-for="item in this.choices">
-            <a href="#" @click="madeChoice(item)" :class="[Test ? 'bg-gray-100 text-gray-900 hover:bg-gray-400' : 'text-gray-700', 'block px-4 py-2 text-sm']">{{ item }}</a>
+            <a href="#" @click="madeMapChoice(item)" :class="[Test ? 'bg-gray-100 text-gray-900 hover:bg-gray-400' : 'text-gray-700', 'block px-4 py-2 text-sm']">{{ item.name }}</a>
           </MenuItems>
         </div>
       </MenuItems>
@@ -42,7 +42,7 @@ export default {
   },
   data() {
     return {
-      selectedChoice: this.choices !== undefined ? this.choices[0] : 'Aucune option sélectionnée',
+      selectedChoice: '',
     };
   },
   methods: {
@@ -54,7 +54,7 @@ export default {
       this.$emit('changeMapChoice', item)
     },
     async setValues() {
-      this.selectedChoice = this.choices.length > 0 ? this.choices[0] : 'Sélectionner une option'
+      this.selectedChoice = this.choices !== undefined && this.choices[0] !== undefined ? this.choices[0].name : 'Sélectionner une option'
       return true
     }
   },

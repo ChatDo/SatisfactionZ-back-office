@@ -142,11 +142,9 @@
         <div
             class="border-b border-gray-200 px-4 py-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8">
           <div class="min-w-0 flex-1">
-<!--            TODO: SITE NAME-->
-            <h1 class="text-lg font-medium leading-6 text-gray-900 sm:truncate"> {{ this.siteTitle }}</h1>
+            <h1 class="text-2xl font-medium leading-6 text-gray-900 sm:truncate"> {{ this.siteTitle }}</h1>
           </div>
         </div>
-        <bar-chart />
 
         <!-- Projects table (small breakpoint and up) -->
         <div class="hidden sm:block">
@@ -157,7 +155,9 @@
                 <h4 class="mt-2 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">Aucune réaction reçue</h4>
               </div>
             </div>
-            <table v-else class="min-w-full ml-2 mr-5">
+            <div v-else>
+              <bar-chart />
+            <table class="min-w-full ml-2 mr-5">
               <thead>
               <tr class="border-t border-gray-200">
                 <th class="border-b border-gray-200 bg-gray-50 px-6 py-3 text-center text-sm font-semibold text-gray-900"
@@ -195,6 +195,8 @@
               </tr>
               </tbody>
             </table>
+            </div>
+
           </div>
         </div>
       </main>

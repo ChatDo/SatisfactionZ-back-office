@@ -11,15 +11,16 @@
           <dl class="mt-6 space-y-6 divide-y divide-gray-100 border-t border-gray-200 text-sm leading-6">
             <div class="pt-6 sm:flex">
               <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Nom du site</dt>
-              <dd class="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                <dropdown :choices="getSitesName()" />
+              <dd class="mt-1 flex justify-end gap-x-6 sm:mt-0 sm:flex-auto">
+                <map-dropdown v-if="siteChoices !== undefined && siteChoices.length > 0 && siteChoices[0].length > 0" :choices="siteChoices[0]" @changeMapChoice="updateDevices($event)" />
+                <div v-else class="text-gray-400">Aucun site</div>
               </dd>
             </div>
             <div class="pt-6 sm:flex">
               <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Email du receveur</dt>
-              <dd class="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
+              <dd class="mt-1 flex justify-end gap-x-6 sm:mt-0 sm:flex-auto">
                 <input type="text" name="receiverMail" ref="receiverMail" id="receiverMail"
-                       class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                       class="block w-8/12 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                        placeholder="admin@mail.re">
               </dd>
             </div>
@@ -38,12 +39,14 @@
           <ul role="list" class="mt-6 divide-y divide-gray-100 border-t border-gray-200 text-sm leading-6">
             <li class="flex justify-between gap-x-6 py-6">
               <div class="font-medium text-gray-900">Sur site</div>
-              <dropdown :map-choices="siteChoices[0]" @changeMapChoice="updateDevices($event)" />
+              <map-dropdown v-if="siteChoices !== undefined && siteChoices.length > 0 && siteChoices[0].length > 0" :choices="siteChoices[0]" @changeMapChoice="updateDevices($event)" />
+              <div v-else class="text-gray-400">Aucun site</div>
 
             </li>
             <li class="flex justify-between gap-x-6 py-6">
               <div class="font-medium text-gray-900">Liste des appareils</div>
-              <dropdown :choices="devicesChoices"/>
+              <dropdown v-if="devicesChoices.length > 0" :choices="devicesChoices"/>
+              <div v-else class="text-gray-400">Aucun appareil</div>
             </li>
             <li class="flex justify-between gap-x-6 py-6">
               <div class="font-medium text-gray-900">Type d'animation</div>
@@ -78,6 +81,7 @@ import AddSite from "@/components/AddSite.vue";
 import Dropdown from "@/components/Dropdown.vue";
 import Site from "@/components/SitesList.vue";
 import AddDevice from "@/components/AddDevice.vue";
+import MapDropdown from "@/components/MapDropdown.vue";
 
 
 export default {
@@ -85,6 +89,7 @@ export default {
     "modal": AddSite,
     "deviceModal": AddDevice,
     "dropdown": Dropdown,
+    "map-dropdown": MapDropdown,
   },
   data() {
     return {
@@ -137,11 +142,6 @@ export default {
         }))
       })
     },
-    getSitesName() {
-        return this.siteChoices[0].map((elem) => {
-          return elem.name
-        })
-    },
     async getSitesChoices() {
       // LOGIN
       await fetch(`${HOST}/sites`, {
@@ -153,6 +153,7 @@ export default {
           console.log("Unauthorized")
         }
         this.siteChoices.push(((await res.json()).result.map((site) => {
+          console.log("PUSHING: " + site)
           return {"name": site.name, "id": site.id}
         })))
       })
@@ -199,5 +200,6 @@ export default {
 
 <script setup>
 import {HOST} from "@/utils";
+import sitesList from "@/components/SitesList.vue";
 
 </script>
