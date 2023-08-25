@@ -29,11 +29,7 @@ export default {
       if (this.selectedNavigation === id) {
         return
       }
-      console.log(id, name)
-      // TODO: Fix this warning
       this.selectedNavigation = id
-      console.log( this.selectedNavigation)
-
       this.$emit('changeNav', {id, name})
     }
   }

@@ -280,7 +280,6 @@ export default {
         },
       }).then(async (res) => {
         this.devices = (await res.json()).result
-        console.log(this.devices)
       })
     },
     async changeNav(event) {
@@ -299,7 +298,6 @@ export default {
   },
   created() {
     this.checkAuth().then((value) => {
-      console.log(value)
       if (value)
         this.getUser();
       else

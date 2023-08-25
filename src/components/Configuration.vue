@@ -126,7 +126,6 @@ export default {
       console.log("MODIFIED SITE")
     },
     async updateDevices(event) {
-      console.log(event)
       this.selectedSiteId = event.id
       await fetch(`${HOST}/${event.id}/devices`, {
         headers: {
@@ -137,7 +136,6 @@ export default {
           console.log("Unauthorized")
         }
         this.devicesChoices = ((await res.json()).result.map((device) => {
-          console.log(device)
           return device.name
         }))
       })
@@ -159,7 +157,6 @@ export default {
       })
     },
     async postDevice(data) {
-      console.log(data);
       let req = await fetch(`${HOST}/devices`, {
         method: 'POST',
         headers: {
@@ -171,7 +168,6 @@ export default {
           site_id: `${this.selectedSiteId}`
         })
       })
-      console.log(await req.json())
       this.showDeviceModal = false
     },
     async postSite(data) {
@@ -187,7 +183,6 @@ export default {
           send_to: `${data.receiver}`
         })
       })
-      console.log(await req.json())
       this.showModal = false
     },
   },

@@ -39,8 +39,6 @@ export default {
   emits: ['changeSite'],
   methods: {
     async removeSite(site) {
-      console.log(site)
-      console.log(document.cookie.split('=')[1])
       let del = await fetch(`${HOST}/sites/${site.id}`, {
         method: 'DELETE',
         headers: {
@@ -68,7 +66,6 @@ export default {
           send_to: `${data.receiver}`
         })
       })
-      console.log(await req.json())
       this.showModal = false
     },
     async cancelModal() {

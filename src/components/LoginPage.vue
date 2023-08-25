@@ -89,8 +89,6 @@ export default {
     },
     async setAuthCookie() {
       console.log("setAuthCookie")
-      console.log(this.$refs.email.value)
-      console.log(this.$refs.password.value)
       await fetch(`${HOST}/login`, {
         method: 'POST',
         headers: {
@@ -101,7 +99,6 @@ export default {
           password: this.$refs.password.value,
         })
       }).then(async (result) => {
-        console.log(result)
         if (result.status !== 200) {
           alert("Wrong credentials")
           return

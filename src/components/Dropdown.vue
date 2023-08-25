@@ -60,7 +60,6 @@ export default {
   },
   async created() {
     this.setValues().then((res) => {
-      console.log(res)
     })
   }
 }
