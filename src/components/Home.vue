@@ -308,6 +308,7 @@ import {
 } from '@headlessui/vue'
 import moment from 'moment'
 import {Bars3CenterLeftIcon, XMarkIcon} from '@heroicons/vue/24/outline'
+import {HOST} from "@/utils";
 
 const sidebarOpen = ref(false)
 </script>

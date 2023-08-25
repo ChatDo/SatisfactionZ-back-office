@@ -198,4 +198,6 @@ export default {
 
 
 <script setup>
+import {HOST} from "@/utils";
+
 </script>

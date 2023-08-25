@@ -36,4 +36,6 @@ export default {
 </script>
 
 <script setup>
+import {HOST} from "@/utils";
+
 </script>

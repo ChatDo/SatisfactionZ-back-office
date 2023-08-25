@@ -62,6 +62,8 @@
 </template>
 
 <script>
+import {HOST} from "@/utils";
+
 export default {
   computed: {
     username() {
