@@ -82,6 +82,7 @@ import Dropdown from "@/components/Dropdown.vue";
 import Site from "@/components/SitesList.vue";
 import AddDevice from "@/components/AddDevice.vue";
 import MapDropdown from "@/components/MapDropdown.vue";
+import {getCookie, HOST} from "@/utils";
 
 
 export default {
@@ -129,7 +130,7 @@ export default {
       this.selectedSiteId = event.id
       await fetch(`${HOST}/${event.id}/devices`, {
         headers: {
-          'Authorization': document.cookie.split('=')[1]
+          'Authorization': getCookie('accessToken')
         }
       }).then(async (res) => {
         if (res.status === 401) {
@@ -144,7 +145,7 @@ export default {
       // LOGIN
       await fetch(`${HOST}/sites`, {
         headers: {
-          'Authorization': document.cookie.split('=')[1]
+          'Authorization': getCookie('accessToken')
         }
       }).then(async (res) => {
         if (res.status === 401) {
@@ -161,7 +162,7 @@ export default {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': document.cookie.split('=')[1]
+          'Authorization': getCookie('accessToken')
         },
         body: JSON.stringify({
           name: `${data.name}`,
@@ -175,7 +176,7 @@ export default {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': document.cookie.split('=')[1]
+          'Authorization': getCookie('accessToken')
         },
         body: JSON.stringify({
           name: `${data.site}`,

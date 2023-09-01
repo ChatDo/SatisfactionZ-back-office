@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import {getCookie, HOST} from "@/utils";
+
 export default {
   data() {
     return {
@@ -21,7 +23,7 @@ export default {
       await fetch(`${HOST}/${this.id}/reactions`, {
         method: 'GET',
         headers: {
-          'Authorization': document.cookie.split('=')[1]
+          'Authorization': getCookie('accessToken')
         },
       }).then(async (res) => {
         this.reactions = (await res.json()).result

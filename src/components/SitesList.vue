@@ -24,6 +24,7 @@
 
 <script>
 import AddSite from "@/components/AddSite.vue";
+import {getCookie, HOST} from "@/utils";
 
 export default {
   data() {
@@ -42,7 +43,7 @@ export default {
       let del = await fetch(`${HOST}/sites/${site.id}`, {
         method: 'DELETE',
         headers: {
-          'Authorization': document.cookie.split('=')[1]
+          'Authorization': getCookie('accessToken')
         },
       })
     },
@@ -54,15 +55,21 @@ export default {
       this.selectedSite = site.id
     },
     async postSite(data) {
-      let req = await fetch(`${HOST}/sites`, {
+      console.log(document.cookie)
+      console.log(getCookie('accessToken'))
+        // TODO: REMOVE THIS
+      let temp = new Date().toISOString().slice(0, 19).replace('T', ' ')
+
+        let req = await fetch(`${HOST}/sites`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': document.cookie.split('=')[1]
+          'Authorization': getCookie('accessToken')
         },
         body: JSON.stringify({
           name: `${data.site}`,
-          device_name: `${data.device}`,
+          open_at: `${temp}`,
+          close_at: `${temp}`,
           send_to: `${data.receiver}`
         })
       })
@@ -75,7 +82,7 @@ export default {
       // LOGIN
       await fetch(`${HOST}/sites`, {
         headers: {
-          'Authorization': document.cookie.split('=')[1]
+          'Authorization': getCookie('accessToken')
         }
       }).then(async (res) => {
         if (res.status === 401) {
