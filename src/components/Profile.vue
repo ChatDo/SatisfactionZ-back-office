@@ -18,11 +18,6 @@
                 </span>
               </span>
       </div>
-<!--      <div class="relative">-->
-<!--        <div class="absolute inset-0 flex" aria-hidden="true">-->
-<!--          <div class="w-full border-t border-gray-300" />-->
-<!--        </div>-->
-<!--      </div>-->
       <transition enter-active-class="transition ease-out duration-100"
                   enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100"
                   leave-active-class="transition ease-in duration-75"
