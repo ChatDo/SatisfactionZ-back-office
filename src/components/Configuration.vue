@@ -37,7 +37,9 @@
                         <div class="justify-center flex">
                             <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Image du profil</dt>
                             <dd class="mt-1 flex justify-end gap-x-6 sm:mt-0 sm:flex-auto">
-                                <input v-on:change="getDataFromPicture" ref="pictureFile" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer dark:text-gray-400 focus:outline-none" id="file_input" type="file">
+                                <input v-on:change="getDataFromPicture" ref="pictureFile"
+                                       class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer dark:text-gray-400 focus:outline-none"
+                                       id="file_input" type="file">
                             </dd>
                         </div>
                         <div class="justify-center flex">
@@ -127,6 +129,7 @@ import Site from "@/components/SitesList.vue";
 import AddDevice from "@/components/AddDevice.vue";
 import MapDropdown from "@/components/MapDropdown.vue";
 import {getCookie, HOST} from "@/utils";
+import axios from "axios";
 
 
 export default {
@@ -170,32 +173,33 @@ export default {
             if (file.type !== "image/png") {
                 console.log("INVALID FILE")
             } else {
-                this.file = await file.arrayBuffer()
-                console.log(await file.arrayBuffer())
+                this.file = file
             }
         },
         async cancelDeviceModal() {
             this.showDeviceModal = false
         },
         async saveProfile() {
-            let data = this.file
-            console.log("DATA:\n")
-            console.log(data)
-            await fetch(`${HOST}/me`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': getCookie('accessToken')
-                },
-                body: JSON.stringify({
-                    data: `${data}`,
+            const formData = new FormData();
+
+            // Append the selected file to the FormData object
+            formData.append('file', this.file);
+
+            // Send the FormData to your backend using Axios or another HTTP library
+            axios
+                .post(`${HOST}/me`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': getCookie('accessToken')
+                    },
                 })
-            }).then(async (res) => {
-                if (res.status === 401) {
-                    console.log("Unauthorized")
-                }
-                console.log(await res.json())
-            })
+                .then((response) => {
+                    console.log('File uploaded successfully');
+                })
+                .catch((error) => {
+                    // Handle errors
+                    console.error('Error uploading file:', error);
+                });
         },
         async updateDevices(event) {
             this.selectedSiteId = event.id
