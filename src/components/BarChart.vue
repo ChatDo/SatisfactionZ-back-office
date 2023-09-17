@@ -34,7 +34,7 @@ export default {
       return labels
     },
     async generateData(site) {
-      await fetch(`${HOST}/${site.id}/reactions`, {
+      await fetch(`${HOST}/${this.siteId}/reactions`, {
         method: 'GET',
         headers: {
           'Authorization': getCookie('accessToken')
@@ -47,7 +47,11 @@ export default {
   props: {
     site: {
       type: Object,
-      required: true
+      required: false
+    },
+    siteId: {
+      type: Number,
+      required: false
     }
   },
   data() {
