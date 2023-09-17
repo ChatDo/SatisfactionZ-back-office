@@ -12,6 +12,7 @@
 <script>
 import { Bar } from 'vue-chartjs'
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js'
+import {getCookie, HOST} from "@/utils";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement)
 
@@ -31,11 +32,30 @@ export default {
         }
       }
       return labels
+    },
+    async generateData(site) {
+      await fetch(`${HOST}/${site.id}/reactions`, {
+        method: 'GET',
+        headers: {
+          'Authorization': getCookie('accessToken')
+        },
+      },).then(async (res) => {
+        console.log(await res.json())
+      });
+    }
+  },
+  props: {
+    site: {
+      type: Object,
+      required: true
     }
   },
   data() {
     return {
       labels: [],
+      happy: [],
+      neutral: [],
+      sad: [],
       data: {
         labels: this.generateLabels(),
         datasets: [
@@ -59,14 +79,14 @@ export default {
             data: [6, 12, 1, 12, 1],
             order: 2,
             backgroundColor: "#ff3434",
-          },
-          {
-            type: 'line',
-            label: "Total",
-            data: [10, 12, 1, 12, 1],
-            order: 1,
-            borderColor: "#20222a",
           }
+          // ,{
+          //   type: 'line',
+          //   label: "Total",
+          //   data: [10, 12, 1, 12, 1],
+          //   order: 1,
+          //   borderColor: "#20222a",
+          // }
         ],
       },
       chartOptions: {
