@@ -162,7 +162,7 @@
                             </div>
                         </div>
                         <div v-else>
-                            <bar-chart :site="this.selectedSite"/>
+                            <bar-chart :siteId="this.selectedSite"/>
                             <table class="min-w-full ml-2 mr-5">
                                 <thead>
                                 <tr class="border-t border-gray-200">
