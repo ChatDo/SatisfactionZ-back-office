@@ -1,24 +1,37 @@
 <template>
   <div class="w-9/12 flex">
-  <Bar
-      id="bar-chart"
-      :options="this.chartOptions"
-      :data="this.data"
-  />
+    <Bar
+        id="bar-chart"
+        v-if="loaded"
+        :options="this.chartOptions"
+        :data="this.data"
+    />
   </div>
 
 </template>
 
 <script>
-import { Bar } from 'vue-chartjs'
-import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js'
+import {Bar} from 'vue-chartjs'
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement
+} from 'chart.js'
 import {getCookie, HOST} from "@/utils";
+import moment from "moment";
+import {toRaw} from "vue";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement)
 
 export default {
   name: 'bar-chart',
-  components: { Bar },
+  components: {Bar},
   methods: {
     generateLabels() {
       let labels = []
@@ -33,22 +46,87 @@ export default {
       }
       return labels
     },
-    async generateData(site) {
-      await fetch(`${HOST}/${this.siteId}/reactions`, {
+    generateData() {
+      fetch(`${HOST}/${this.siteId}/reactions`, {
         method: 'GET',
         headers: {
           'Authorization': getCookie('accessToken')
         },
-      },).then(async (res) => {
-        console.log(await res.json())
-      });
+      },).then((res) => res.json())
+          .then((data) => {
+            console.log("Checking")
+            console.log(data)
+            let list = []
+            let happy = []
+            let sad = []
+            let neutral = []
+            for (let i = 0; i < data.result.reactions.length; i++) {
+              list.push(
+                  {
+                    'state': data.result.reactions[i].state,
+                    'hour': moment(data.result.reactions[i].created_at).format('HH')
+                  }
+              )
+            }
+            list.sort()
+            let finalCountHappy = {}
+            let finalCountSad = {}
+            let finalCountNeutral = {}
+            for (let i = 0; i <= 24; i++) {
+              // COUNT GLOBALLY OCCURENCE OF EACH NUMBER IN LIST
+              finalCountHappy[i] = (finalCountHappy[i] || 0)
+              finalCountSad[i] = (finalCountSad[i] || 0)
+              finalCountNeutral[i] = (finalCountNeutral[i] || 0)
+              if (i >= list.length) {
+                continue
+              }
+              if (list[i].state === "satisfait" || list[i].state === "happy") {
+                finalCountHappy[list[i].hour] = (finalCountHappy[list[i].hour] || 0) + 1
+              }
+              if (list[i].state === "insatisfait" || list[i].state === "unhappy") {
+                finalCountSad[list[i].hour] = (finalCountSad[list[i].hour] || 0) + 1
+              }
+              if (list[i].state === "neutre" || list[i].state === "neutral") {
+                finalCountNeutral[list[i].hour] = (finalCountNeutral[list[i].hour] || 0) + 1
+              }
+            }
+            for (let i = 0; i < 24; i++) {
+              console.log(finalCountHappy[i])
+              happy.push(toRaw(finalCountHappy[i]))
+              sad.push(finalCountSad[i])
+              neutral.push(finalCountNeutral[i])
+            }
+            this.data = {
+              labels: this.generateLabels(),
+              datasets: [
+                {
+                  type: 'bar',
+                  label: "Content",
+                  data: happy,
+                  order: 2,
+                  backgroundColor: '#4cff41',
+                },
+                {
+                  type: 'bar',
+                  label: "Neutre",
+                  data: neutral,
+                  order: 2,
+                  backgroundColor: '#fba813',
+                },
+                {
+                  type: 'bar',
+                  label: "Triste",
+                  data: sad,
+                  order: 2,
+                  backgroundColor: "#ff3434",
+                }
+              ],
+            }
+            this.loaded = true;
+          });
     }
   },
   props: {
-    site: {
-      type: Object,
-      required: false
-    },
     siteId: {
       type: Number,
       required: false
@@ -60,44 +138,15 @@ export default {
       happy: [],
       neutral: [],
       sad: [],
-      data: {
-        labels: this.generateLabels(),
-        datasets: [
-          {
-            type: 'bar',
-            label: "Content",
-            data: [6, 12, 12, 1, 12, 1, 12, 1],
-            order: 2,
-            backgroundColor: '#4cff41',
-          },
-          {
-            type: 'bar',
-            label: "Neutre",
-            data: [6, 12, 1, 12, 1],
-            order: 2,
-            backgroundColor: '#fba813',
-          },
-          {
-            type: 'bar',
-            label: "Triste",
-            data: [6, 12, 1, 12, 1],
-            order: 2,
-            backgroundColor: "#ff3434",
-          }
-          // ,{
-          //   type: 'line',
-          //   label: "Total",
-          //   data: [10, 12, 1, 12, 1],
-          //   order: 1,
-          //   borderColor: "#20222a",
-          // }
-        ],
-      },
-      chartOptions: {
-      }
+      data: null,
+      loaded: false,
+      chartOptions: {}
     }
   },
   created() {
+  },
+  mounted() {
+    this.generateData()
   }
 }
 </script>

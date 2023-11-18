@@ -6,8 +6,10 @@
               <span class="flex w-full items-center justify-between">
                 <span class="flex min-w-0 items-center justify-between space-x-3">
                   <img class="h-10 w-10 flex-shrink-0 rounded-full bg-gray-300"
-                       :src="'src/assets/img/' + user.picture"
+                       :src="'src/assets/img/default.png'"
                        alt=""/>
+                  <!--                       :src="'src/assets/img/' + user.picture"-->
+
                   <span class="flex min-w-0 flex-1 flex-col">
                     <span class="truncate text-sm font-medium text-gray-900">{{
                         user.name + " " + user.firstname
