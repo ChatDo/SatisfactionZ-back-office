@@ -20,5 +20,10 @@ pnpm run build
 pnpm run lint
 ```
 
+### Run docker
+```
+docker compose up --build --remove-orphans --force-recreate
+```
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
